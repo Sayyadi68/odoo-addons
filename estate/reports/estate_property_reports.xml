@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report Action -->
+    <record id="action_report_estate_property" model="ir.actions.report">
+        <field name="name">مشخصات ملک</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_estate_property</field>
+        <field name="report_file">estate.report_estate_property</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'مشخصات ملک - %s' % (object.name)</field>
+    </record>
+
+
+    <!-- Main Report Template -->
+    <template id="report_estate_property">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="estate.report_estate_property_document"
+                   t-lang="doc.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+
+
+    <!-- Report Document -->
+    <template id="report_estate_property_document">
+        <t t-call="web.external_layout">
+
+            <div class="page"
+                 style="
+                    direction: rtl;
+                    text-align: right;
+                    font-family: Arial, sans-serif;
+                    color: #1f2937;
+                    padding: 10px;
+                 ">
+
+                <!-- Header -->
+                <div style="
+                        background: #1e293b;
+                        color: white;
+                        padding: 22px 26px;
+                        border-radius: 10px;
+                        margin-bottom: 25px;
+                    ">
+
+                    <div style="
+                            font-size: 26px;
+                            font-weight: bold;
+                            margin-bottom: 8px;
+                        ">
+                        <span t-field="doc.name"/>
+                    </div>
+
+                    <div style="
+                            font-size: 13px;
+                            color: #cbd5e1;
+                        ">
+                        گزارش مشخصات کامل ملک
+                    </div>
+
+                </div>
+
+
+                <!-- General Information -->
+                <div style="
+                        border: 1px solid #e5e7eb;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                    ">
+
+                    <div style="
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #0f172a;
+                            border-bottom: 2px solid #e5e7eb;
+                            padding-bottom: 10px;
+                            margin-bottom: 18px;
+                        ">
+                        اطلاعات عمومی ملک
+                    </div>
+
+
+                    <table style="
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                        ">
+
+                        <tbody>
+
+                            <tr>
+                                <td style="width: 25%; padding: 10px; color: #64748b;">
+                                    نام ملک
+                                </td>
+                                <td style="width: 25%; padding: 10px; font-weight: bold;">
+                                    <span t-field="doc.name"/>
+                                </td>
+
+                                <td style="width: 25%; padding: 10px; color: #64748b;">
+                                    کد پستی
+                                </td>
+                                <td style="width: 25%; padding: 10px; font-weight: bold;">
+                                    <span t-if="doc.postcode" t-field="doc.postcode"/>
+                                    <span t-else="">—</span>
+                                </td>
+                            </tr>
+
+
+                            <tr style="background: #f8fafc;">
+                                <td style="padding: 10px; color: #64748b;">
+                                    تاریخ دسترسی
+                                </td>
+                                <td style="padding: 10px; font-weight: bold;">
+                                    <span t-if="doc.date_availability"
+                                          t-field="doc.date_availability"/>
+                                    <span t-else="">—</span>
+                                </td>
+
+                                <td style="padding: 10px; color: #64748b;">
+                                    تعداد اتاق خواب
+                                </td>
+                                <td style="padding: 10px; font-weight: bold;">
+                                    <span t-field="doc.bedrooms"/>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td style="padding: 10px; color: #64748b;">
+                                    مساحت بنا
+                                </td>
+                                <td style="padding: 10px; font-weight: bold;">
+                                    <span t-field="doc.living_area"/>
+                                    متر مربع
+                                </td>
+
+                                <td style="padding: 10px; color: #64748b;">
+                                    تعداد نما
+                                </td>
+                                <td style="padding: 10px; font-weight: bold;">
+                                    <span t-field="doc.facades"/>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!-- Price Information -->
+                <div style="
+                        border: 1px solid #e5e7eb;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                    ">
+
+                    <div style="
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #0f172a;
+                            border-bottom: 2px solid #e5e7eb;
+                            padding-bottom: 10px;
+                            margin-bottom: 18px;
+                        ">
+                        اطلاعات قیمت
+                    </div>
+
+
+                    <table style="
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                        ">
+
+                        <tbody>
+
+                            <tr>
+
+                                <td style="
+                                        width: 25%;
+                                        padding: 14px;
+                                        color: #64748b;
+                                    ">
+                                    قیمت مورد انتظار
+                                </td>
+
+                                <td style="
+                                        width: 25%;
+                                        padding: 14px;
+                                        font-size: 17px;
+                                        font-weight: bold;
+                                        color: #2563eb;
+                                    ">
+                                    <span t-field="doc.expected_price"
+                                          t-options='{"widget": "monetary",
+                                                      "display_currency": doc.env.company.currency_id}'/>
+                                </td>
+
+
+                                <td style="
+                                        width: 25%;
+                                        padding: 14px;
+                                        color: #64748b;
+                                    ">
+                                    قیمت فروش
+                                </td>
+
+                                <td style="
+                                        width: 25%;
+                                        padding: 14px;
+                                        font-size: 17px;
+                                        font-weight: bold;
+                                        color: #16a34a;
+                                    ">
+
+                                    <t t-if="doc.selling_price">
+
+                                        <span t-field="doc.selling_price"
+                                              t-options='{"widget": "monetary",
+                                                          "display_currency": doc.env.company.currency_id}'/>
+
+                                    </t>
+
+                                    <t t-else="">
+                                        <span style="
+                                            color: #94a3b8;
+                                            font-size: 13px;
+                                        ">
+                                            هنوز فروخته نشده
+                                        </span>
+                                    </t>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!-- Features -->
+                <div style="
+                        border: 1px solid #e5e7eb;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                    ">
+
+                    <div style="
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #0f172a;
+                            border-bottom: 2px solid #e5e7eb;
+                            padding-bottom: 10px;
+                            margin-bottom: 18px;
+                        ">
+                        امکانات ملک
+                    </div>
+
+
+                    <table style="
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                        ">
+
+                        <tbody>
+
+                            <tr>
+
+                                <td style="
+                                    width: 25%;
+                                    padding: 12px;
+                                    color: #64748b;
+                                ">
+                                    پارکینگ
+                                </td>
+
+                                <td style="
+                                    width: 25%;
+                                    padding: 12px;
+                                    font-weight: bold;
+                                ">
+
+                                    <t t-if="doc.garage">
+                                        <span style="color: #16a34a;">
+                                            ✓ دارد
+                                        </span>
+                                    </t>
+
+                                    <t t-else="">
+                                        <span style="color: #dc2626;">
+                                            ✕ ندارد
+                                        </span>
+                                    </t>
+
+                                </td>
+
+
+                                <td style="
+                                    width: 25%;
+                                    padding: 12px;
+                                    color: #64748b;
+                                ">
+                                    باغ
+                                </td>
+
+                                <td style="
+                                    width: 25%;
+                                    padding: 12px;
+                                    font-weight: bold;
+                                ">
+
+                                    <t t-if="doc.garden">
+                                        <span style="color: #16a34a;">
+                                            ✓ دارد
+                                        </span>
+                                    </t>
+
+                                    <t t-else="">
+                                        <span style="color: #dc2626;">
+                                            ✕ ندارد
+                                        </span>
+                                    </t>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- Garden Details -->
+                            <tr t-if="doc.garden"
+                                style="background: #f8fafc;">
+
+                                <td style="padding: 12px; color: #64748b;">
+                                    مساحت باغ
+                                </td>
+
+                                <td style="padding: 12px; font-weight: bold;">
+                                    <span t-field="doc.garden_area"/>
+                                    متر مربع
+                                </td>
+
+
+                                <td style="padding: 12px; color: #64748b;">
+                                    جهت باغ
+                                </td>
+
+                                <td style="padding: 12px; font-weight: bold;">
+
+                                    <t t-if="doc.garden_orientation == 'north'">
+                                        شمال
+                                    </t>
+
+                                    <t t-elif="doc.garden_orientation == 'south'">
+                                        جنوب
+                                    </t>
+
+                                    <t t-elif="doc.garden_orientation == 'east'">
+                                        شرق
+                                    </t>
+
+                                    <t t-elif="doc.garden_orientation == 'west'">
+                                        غرب
+                                    </t>
+
+                                    <t t-else="">
+                                        —
+                                    </t>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!-- Description -->
+                <div style="
+                        border: 1px solid #e5e7eb;
+                        border-radius: 10px;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                    ">
+
+                    <div style="
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: #0f172a;
+                            border-bottom: 2px solid #e5e7eb;
+                            padding-bottom: 10px;
+                            margin-bottom: 15px;
+                        ">
+                        توضیحات ملک
+                    </div>
+
+                    <div style="
+                            background: #f8fafc;
+                            padding: 15px;
+                            border-radius: 7px;
+                            line-height: 2;
+                            font-size: 14px;
+                        ">
+                        <span t-field="doc.description"/>
+                    </div>
+
+                </div>
+
+
+                <!-- Footer Information -->
+                <div style="
+                        margin-top: 30px;
+                        padding-top: 15px;
+                        border-top: 1px solid #e5e7eb;
+                        font-size: 11px;
+                        color: #94a3b8;
+                        text-align: center;
+                    ">
+
+                    گزارش مشخصات ملک
+
+                    <span style="margin: 0 5px;">|</span>
+
+                    <span t-field="doc.env.company.name"/>
+
+                </div>
+
+
+                <div class="oe_structure"/>
+
+            </div>
+
+        </t>
+    </template>
+
+</odoo>

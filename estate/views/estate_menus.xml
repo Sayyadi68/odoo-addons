@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <menuitem
+                id="estate_menu_root"
+                name="املاک"
+                web_icon="estate,static/description/icon.png"
+        />
+
+
+        <menuitem
+                id="estate_menu_estate_property"
+                action="action_estate_property"
+                name="جزئیات"
+                parent="estate_menu_root"
+                sequence="1"/>
+
+        <menuitem
+                id="estate_menu_estate_property_settings"
+                name="گزینه ها"
+                parent="estate_menu_root"
+                sequence="1"/>
+
+        <menuitem
+                id="estate_menu_estate_property_type"
+                action="action_estate_property_type"
+                name="انواع"
+                parent="estate_menu_estate_property_settings"
+                sequence="1"/>
+
+        <menuitem
+                id="estate_menu_estate_property_tag"
+                action="action_estate_property_tag"
+                name="تگ ها"
+                parent="estate_menu_estate_property_settings"
+                sequence="2"/>
+    </data>
+
+</odoo>
